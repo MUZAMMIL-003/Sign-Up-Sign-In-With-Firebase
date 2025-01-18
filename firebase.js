@@ -6,6 +6,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -22,6 +24,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
 
 
 
@@ -40,6 +44,8 @@ let mainDiv = document.getElementById("main");
 
 let mainContainerDiv = document.getElementById("main-container");
 let h1 = document.getElementById("h1");
+
+let googleBttn = document.getElementById("googleBttn");
 
 
 
@@ -106,10 +112,30 @@ onAuthStateChanged(auth, (user) => {
 
 
 
+googleBttn.addEventListener("click", async() => {
+  await signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
 
-// if (user) {
-//   console.log(user.value)
+      console.log("Sign-In With Google Successfull!")
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+      console.log(errorCode, errorMessage)
+      console.log("Sign-In With Google Faild!")
+    });
+});
 
-// } else {
-// }
 
