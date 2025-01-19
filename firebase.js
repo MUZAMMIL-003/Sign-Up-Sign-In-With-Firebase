@@ -8,7 +8,15 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+
 } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDUGNB_d1tXz8dCqMy0ooJ4nNee2mAFTzU",
@@ -25,6 +33,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
 
 
@@ -47,6 +56,9 @@ let h1 = document.getElementById("h1");
 
 let googleBttn = document.getElementById("googleBttn");
 
+let naame = document.getElementById("naame")
+let phoneNum = document.getElementById("phoneNum")
+
 
 
 //// Creating Users Accounts! ///////////
@@ -54,9 +66,20 @@ signUpBttn.addEventListener("click", async () => {
   await createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
       const user = userCredential.user;
+      console.log(user)
       let span1 = document.getElementById("spanSU")
       span1.innerHTML = "SUCESSED!"
       console.log("Account Created Successfully!")
+      const docRef = addDoc(collection(db, "users"), {
+        Name: naame.value,
+        PhoneNumber: phoneNum.value,
+        Email: email.value,
+      });
+      console.log("Document written with ID: ", docRef.id);
+      // const querySnapshot = getDocs(collection(db, "users"));
+      // querySnapshot.forEach((doc) => {
+      //   console.log(`${doc.id} => ${doc.data()}`);
+      // });
       // ...
     })
     .catch((error) => {
@@ -79,6 +102,7 @@ signInbttn.addEventListener("click", async () => {
       // Signed in 
       const user = userCredential.user;
       console.log("User Sign-In Successfully")
+      console.log(user)
       let span2 = document.getElementById("spanSI")
       span2.innerHTML = "SUCESSED!"
       // ...
@@ -98,6 +122,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log("User Logged In")
     const uid = user.uid;
+    console.log(uid)
     mainDiv.style.display = "none";
     mainContainerDiv.style.display = "block";
     h1.innerHTML = email.value;
@@ -112,7 +137,7 @@ onAuthStateChanged(auth, (user) => {
 
 
 
-googleBttn.addEventListener("click", async() => {
+googleBttn.addEventListener("click", async () => {
   await signInWithPopup(auth, provider)
     .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -122,7 +147,7 @@ googleBttn.addEventListener("click", async() => {
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
       // ...
-
+      console.log(user, token);
       console.log("Sign-In With Google Successfull!")
     }).catch((error) => {
       // Handle Errors here.
@@ -134,6 +159,7 @@ googleBttn.addEventListener("click", async() => {
       const credential = GoogleAuthProvider.credentialFromError(error);
       // ...
       console.log(errorCode, errorMessage)
+      console.log(email, credential);
       console.log("Sign-In With Google Faild!")
     });
 });
