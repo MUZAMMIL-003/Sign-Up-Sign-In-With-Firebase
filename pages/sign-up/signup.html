@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .signUp {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 93vh;
+        padding: 20px;
+    }
+
+    .signUp input,
+    .signUp button {
+        width: 100%;
+        max-width: 300px;
+        height: 30px;
+        border-radius: 5px;
+        border: 1px solid black;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    .signUp button {
+        background-color: green;
+        color: white;
+    }
+
+    .signUp button:hover {
+        background-color: darkgreen;
+    }
+
+    @media (max-width: 600px) {
+        .signUp {
+            padding: 10px;
+        }
+
+        .signUp input,
+        .signUp button {
+            width: 100%;
+            max-width: none;
+        }
+    }
+</style>
+<body>
+
+    <div class="signUp">
+        <h1>SIGN UP!</h1>
+        <input type="text" id="naame" placeholder="Enter Your Name" required><br><br>
+        <input type="text" id="phoneNum" placeholder="Enter Your Phone Number" required><br><br>
+        <input type="text" id="email" placeholder="Enter Your Email" required /><br /><br />
+        <input type="text" id="pass" placeholder="Enter Your Password" required /><br /><br />
+        <button id="signUpBttn">Create Account!</button>
+        <br /><br />
+        <span id="spanSU"></span>
+    </div>
+
+
+
+
+
+
+    <script type="module" src="sign-up.js"></script>
+</body>
+
+</html>
